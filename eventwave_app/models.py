@@ -27,6 +27,7 @@ class Event(db.Model):
     date_time = db.Column(db.String(200), nullable=False)
     performer = db.Column(db.String(200), nullable=False)
     venue = db.Column(db.String(200), nullable=False)
+    address = db.Column(db.String(260), nullable=True)
     comments = db.relationship('Comment', back_populates='event')
     created_by_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     created_by = db.relationship('User')

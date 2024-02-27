@@ -13,6 +13,7 @@
          {{performer}}
         {% endfor %}
     </li>
+    <li class="collection-header" id="collection-item">Address: {{ context.address }}</li>
     <li class="collection-header" id="collection-item">Type: {{ context.kind }}</li>
     <li id="results-img" class="collection-header" id="collection-item"><img class="responsive-img" src={{ context.image }} alt="Event Image"> <br> <button class="waves-effect waves-light btn"><a style="text-decoration: none; color: inherit;" href='{{ context.url }}' target="_blank"> Tickets </button> </li>
     

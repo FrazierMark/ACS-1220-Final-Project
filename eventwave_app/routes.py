@@ -28,79 +28,29 @@ bcrypt = Bcrypt()
 
 @main.route('/')
 def homepage():
-    """Functions makes an API call to get event data for Landing Page"""
-    response = requests.get(
-        "https://api.seatgeek.com/2/events?id=6294887&client_id=MjAxNTMyNjV8MTY1MTE4OTU5My40NDUzMzAx")
-    # converts response to JSON objects
-    responseData = response.json()
-    # variables from API
-    title = responseData['events'][0]['title']
-    seatgeek_id = responseData['events'][0]['id']
-    url = responseData['events'][0]['url']
-    pub = responseData['events'][0]['datetime_utc']
-    performer = responseData['events'][0]['performers'][0]['name']
-    performers = responseData['events'][0]['performers']
-    performerArray = []
-    # creates an array of performers for each event
-    for performer in performers:
-        performerArray.append(performer['name'])
-
-    kind = responseData['events'][0]['type']
-    image = responseData['events'][0]['performers'][0]['image']
-
-    context = {
-        'title': title,
-        'seatgeek_id': seatgeek_id,
-        'url': url,
-        'pub': pub,
-        'performer': performer,
-        'performers': performers,
-        'performerArray': performerArray,
-        'kind': kind,
-        'image': image
-    }
-    
-    return render_template('events/index.html', **context)
+    """Landing Page"""
+    return render_template('events/index.html')
 
 @main.route('/results', methods=['POST'])
 def results():
-    """Function makes an API call based on search parameters of user"""
-#     # build query based on search parameters index page
     zip_code = request.form.get('zip')
     radius = request.form.get('radius')
     start = request.form.get('start')
     end = request.form.get('end')
     
-    # if start and end was not entered
     if start == '' or end == '':
         query = f'{BASE_URL}geoip={str(zip_code)}&range={radius}mi{PER_PAGE}{CLIENT_ID}'
     else:
         query = f'{BASE_URL}geoip={zip_code}&range={radius}mi{PER_PAGE}&datetime_utc.gte={start}&datetime_utc.lte={end}{CLIENT_ID}'
-
-#     # api call
+    
     response = requests.get(query)
     responseData = response.json()
-
-#     # compile variables
+    
     if response:
         eventsContext = []
         for event in responseData['events']:
-            title = event['title']
-            seatgeek_id = event['id']
-            url = event['url']
-            pub = event['datetime_utc']
-            kind = event['type']
-            image = event['performers'][0]['image']
-            # performer = event['performers'][1]['name']
-            performers = event['performers']
-            performerArray = []
-            for performer in performers:
-                performerArray.append(performer['name'])
-
-            context = dict_of(title, seatgeek_id, url, pub, performer,
-                              performers, performerArray, kind, image)
+            context = parse_event_data(event)
             eventsContext.append(context)
-
         return render_template('events/results.html', eventsContext=eventsContext)
     return redirect('/')
 
@@ -108,37 +58,22 @@ def results():
 @login_required
 def events_details(seatgeek_id):
     """Function makes an API call to gather data for the detail's page"""
-    
     query = f'{BASE_URL}id={seatgeek_id}{CLIENT_ID}'
-    # API Call
     response = requests.get(query)
     responseData = response.json()
 
-    # Build Context for event selected
-    title = responseData['events'][0]['title']
-    seatgeek_id = responseData['events'][0]['id']
-    url = responseData['events'][0]['url']
-    pub = responseData['events'][0]['datetime_utc']
-    performers = responseData['events'][0]['performers']
-    performerArray = []
-    for performer in performers:
-        performerArray.append(performer['name'])
-    kind = responseData['events'][0]['type']
-    image = responseData['events'][0]['performers'][0]['image']
-
-    context = dict_of(title, seatgeek_id, url, pub, performer,
-                      performers, performerArray, kind, image)
+    context = parse_event_data(responseData['events'][0])
 
     name_v2 = responseData['events'][0]['venue']['name_v2'].replace(" ", "+")
     address = responseData['events'][0]['venue']['address'].replace(" ", "+")
     extended_address = responseData['events'][0]['venue']['extended_address'].replace(
         " ", "+")
 
-    googleEventTitle = title.replace(" ", "+")
-    googleEventStart = pub.translate(str.maketrans('', '', string.punctuation))
+    googleEventTitle = context['title'].replace(" ", "+")
+    googleEventStart = context['pub'].translate(str.maketrans('', '', string.punctuation))
     googleEventEnd = str(int(googleEventStart.replace("T", "")) + 1)
     googleEventEnd = googleEventEnd[:8] + 'T' + googleEventEnd[8:]
-    googleEventDetails = f'&details=For+details,+link+here:+{url}'
+    googleEventDetails = f'&details=For+details,+link+here:+{context["url"]}'
     googleEventAddress = f'&location={name_v2}{address}{extended_address}'
 
     context['googleEventCalendarURL'] = f'https://calendar.google.com/calendar/r/eventedit?text={googleEventTitle}&dates={googleEventStart}/{googleEventEnd}{googleEventDetails}{googleEventAddress}'
@@ -151,37 +86,23 @@ def events_details(seatgeek_id):
 def dashboard_add(seatgeek_id):
     """Function makes API call to gather data about event.
     Data is then stored in database and associated with User"""
-
     query = f'{BASE_URL}id={seatgeek_id}{CLIENT_ID}'
-    # API Call
     response = requests.get(query)
     responseData = response.json()
 
-    # Build Context and saved to database
-    title = responseData['events'][0]['title']
-    seatgeek_id = responseData['events'][0]['id']
-    url = responseData['events'][0]['url']
-    pub = responseData['events'][0]['datetime_utc']
-    kind = responseData['events'][0]['type']
-    image = responseData['events'][0]['performers'][0]['image']
-    performers = responseData['events'][0]['performers']
-    venue = responseData['events'][0]['venue']['name']
-    performerArray = []
-    for performer in performers:
-        performerArray.append(performer['name'])
-    if len(performerArray) > 2:
-        performerString = ' '.join(performerArray[:2])
-    else:
-        performerString = ' '.join(performerArray)
+    context = parse_event_data(responseData['events'][0])
 
-    event = Event(title=title,
-                  seatgeek_id=seatgeek_id,
-                  url=url,
-                  date_time=pub,
-                  venue=venue,
-                  performer=performerString,
-                  image=image,
-                  created_by_id=current_user.id)
+    event = Event(
+        title=context['title'],
+        seatgeek_id=context['seatgeek_id'],
+        url=context['url'],
+        date_time=context['pub'],
+        venue=context['venue'],
+        performer=' '.join(context['performerArray'][:2]),
+        image=context['image'],
+        address=context['address'],
+        created_by_id=current_user.id
+    )
     
     db.session.add(event)
     db.session.commit()
@@ -251,3 +172,29 @@ def logout():
 @main.route('/about', methods=['GET'])
 def about():
     return render_template('about/about.html')
+
+
+# Helper function to parse event data
+def parse_event_data(event):
+    title = event['title']
+    seatgeek_id = event['id']
+    url = event['url']
+    pub = event['datetime_utc']
+    kind = event['type']
+    image = event['performers'][0]['image']
+    performers = event['performers']
+    performerArray = [performer['name'] for performer in performers]
+    address = event['venue']['address']
+    venue = event['venue']['name']  # added for dashboard_add function
+    return {
+        'title': title,
+        'seatgeek_id': seatgeek_id,
+        'url': url,
+        'pub': pub,
+        'performers': performers,
+        'performerArray': performerArray,
+        'kind': kind,
+        'image': image,
+        'address': address,
+        'venue': venue  # added for dashboard_add function
+    }
