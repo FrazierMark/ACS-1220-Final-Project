@@ -1,0 +1,30 @@
+{% extends 'base.html' %} {% block content %}
+<h1>My Events</h1>
+<h3>Upcoming Events</h3>
+
+<div>
+  {%for event in context%}
+  <div id="result">
+    <ul class="collection with-header" id="collection">
+      <li class="collection-header" id="collection-item"> <h4>Event: {{ event.title }}</h4></li>
+      <li class="collection-item" id="collection-item">Date: {{ event.date_time }}</li>
+      <li id="results-img" class="collection-item" id="collection-item"><img class="responsive-img" src={{ event.image }} alt=“Event Image”></li>
+      
+      <li class="collection-header" id="collection-item" style="text-align: center;"><button class="waves-effect waves-light btn"><a style="text-decoration: none; color: inherit;" href="/events/detail/{{event.seatgeek_id}}"> Event Details </button> </li>
+       
+
+      <li class="collection-item" id="collection-item">
+        <form action="/dashboard/delete/{{ event.seatgeek_id }}" method="POST">
+        <input type="hidden" name="DELETE" value="Delete Event" />
+        <button class="waves-effect waves-light btn" type="submit">Delete Event</button>
+      </form>
+    </li>
+    <li class="collection-item" id="collection-item">
+      
+    </li>
+    </ul>
+  </div>
+
+  {% endfor %}
+</div>
+{% endblock %}

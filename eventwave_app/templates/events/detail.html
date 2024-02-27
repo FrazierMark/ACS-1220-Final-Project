@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Details PAGE</h1>
+
+
+<div class="result">
+    <ul class="collection with-header" id="collection">
+    <li class="collection-header" id="collection-item">Event: {{ context.title }}</li>
+    
+    <li class="collection-header" id="collection-item">Date: {{ context.pub }}</li>
+    <li class="collection-header" id="collection-item">Performer:
+        {%for performer in context.performerArray%}
+         {{performer}}
+        {% endfor %}
+    </li>
+    <li class="collection-header" id="collection-item">Type: {{ context.kind }}</li>
+    <li id="results-img" class="collection-header" id="collection-item"><img class="responsive-img" src={{ context.image }} alt="Event Image"> <br> <button class="waves-effect waves-light btn"><a style="text-decoration: none; color: inherit;" href='{{ context.url }}' target="_blank"> Tickets </button> </li>
+    
+    <li class="collection-header" id="collection-item"><form action="/dashboard/{{ context.seatgeek_id }}" method="POST">
+        <input type="hidden" name="POST" value="Add To Event List" />
+        <button class="waves-effect waves-light btn" type="submit">Add to My Event List</button>
+    </form></li>
+    <li class="collection-header" id="collection-item"><button class="waves-effect waves-light btn"><a style="text-decoration: none; color: inherit;" href='{{ context.googleEventCalendarURL }}' target="_blank"> Add to Google Calendar </button> </li>
+        <li class="collection-header" id="collection-item" style="text-align: center;"></li>
+    </ul>
+    
+</div>
+
+{% endblock content %}

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Item - {{ item.name }}</h1>
+
+<p><img src="{{ item.photo_url }}" width="250px" height="250px"></p>
+
+<p><strong>Price:</strong> {{ item.price }}</p>
+
+<p><strong>Category:</strong> {{ item.category }}</p>
+
+<p><strong>Store:</strong> {{ item.store.title }}</p>
+
+
+<h2>Edit Item</h2>
+
+    <form method="POST" action="{{ url_for('main.item_detail', item_id=item.id) }}">
+        {{ form.csrf_token }}
+        <fieldset>
+            <legend>Edit this item</legend>
+    
+            {{ form.name.label }}
+            {{ form.name }}
+            
+            {{ form.price.label }}
+            {{ form.price }}
+            
+            {{ form.category.label }}
+            {{ form.category}}
+            
+            {{ form.photo_urllabel }}
+            {{ form.photo_url }}
+            
+            {{ form.store.label }}
+            {{ form.store }}
+                
+            {{ form.submit }}
+        </fieldset>
+    </form>
+
+{% endblock %}

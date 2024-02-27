@@ -1,0 +1,36 @@
+{% extends 'base.html' %} {% block content %}
+<h1>Search Results</h1>
+
+<div>
+	{% for context in eventsContext %}
+	<div class="result" id="result">
+		<ul class="collection with-header" id="collection">
+			<li class="collection-header" id="collection-item">
+				<h4>Event: {{ context.title }}</h4>
+				<br /><a href="events/detail/{{ context.seatgeek_id }}"
+					>Event Details</a
+				>
+			</li>
+			<li id="results-img">
+				<img
+					class="responsive-img"
+					src="{{ context.image }}"
+					alt="Event Image"
+				/>
+			</li>
+			<li class="collection-item" id="collection-item">
+				Date: {{ context.pub }}
+			</li>
+			<li class="collection-item" id="collection-item">
+				Performer: {% for performer in context.performerArray %} {{ performer }}
+				{% endfor %}
+			</li>
+			<li class="collection-item" id="collection-item">
+				Type: {{ context.kind }}
+			</li>
+		</ul>
+	</div>
+	{% endfor %}
+</div>
+
+{% endblock content %}
