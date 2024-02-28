@@ -36,13 +36,8 @@ def homepage():
 def results():
     zip_code = request.form.get('zip')
     radius = request.form.get('radius')
-    start = request.form.get('start')
-    end = request.form.get('end')
     
-    if start == '' or end == '':
-        query = f'{BASE_URL}geoip={str(zip_code)}&range={radius}mi{PER_PAGE}{CLIENT_ID}'
-    else:
-        query = f'{BASE_URL}geoip={zip_code}&range={radius}mi{PER_PAGE}&datetime_utc.gte={start}&datetime_utc.lte={end}{CLIENT_ID}'
+    query = f'{BASE_URL}geoip={str(zip_code)}&range={radius}mi{PER_PAGE}{CLIENT_ID}'
     
     response = requests.get(query)
     responseData = response.json()
@@ -224,13 +219,14 @@ def parse_event_data(event):
     title = event['title']
     seatgeek_id = event['id']
     url = event['url']
+    date_start = format_date(event['datetime_utc'])
     pub = event['datetime_utc']
     kind = event['type']
     image = event['performers'][0]['image']
     performers = event['performers']
     performerArray = [performer['name'] for performer in performers]
     address = event['venue']['address']
-    venue = event['venue']['name']  # added for dashboard_add function
+    venue = event['venue']['name']
     return {
         'title': title,
         'seatgeek_id': seatgeek_id,
@@ -240,6 +236,11 @@ def parse_event_data(event):
         'performerArray': performerArray,
         'kind': kind,
         'image': image,
+        'date_start': date_start,
         'address': address,
-        'venue': venue  # added for dashboard_add function
+        'venue': venue 
     }
+    
+def format_date(date_string):
+    date = datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%S')
+    return date.strftime('%A, %B %d, %Y %I:%M %p')

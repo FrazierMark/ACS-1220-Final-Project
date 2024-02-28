@@ -1,48 +1,49 @@
 {% extends 'base.html' %} {% block content %}
-<h1>My Events</h1>
-<h3>Upcoming Events</h3>
+<h1 class='my-events'>My Events</h1>
+<h4>Upcoming:</h4>
 
 <div>
   {%for event in context%}
   <div>
     <ul class="collection with-header" id="collection">
-      <li class="collection-header" id="collection-item"> <h4>Event: {{ event.title }}</h4></li>
+      <li class="collection-header" id="collection-item"> <h4>{{ event.title }}</h4></li>
       <li class="collection-item" id="collection-item">Date: {{ event.date_time }}</li>
       <li id="results-img" class="collection-item" id="collection-item"><img class="responsive-img" src={{ event.image }} alt=“Event Image”></li>
       
-      <li class="collection-header" id="collection-item" style="text-align: center;">
+      <li class="collection-header" id="collection-item" style="text-align: center">
+        <div class='comment-section'>
         <button >
           <a href="/events/detail/{{event.seatgeek_id}}"> Event Details</a>
         </button>
-      </li>
-       
 
-      <li class="collection-item" id="collection-item">
-          <form action="/dashboard/delete/{{ event.seatgeek_id }}" method="POST">
+        <form action="/dashboard/delete/{{ event.seatgeek_id }}" method="POST">
           <input type="hidden" name="DELETE" value="Delete Event" />
           <button class="waves-effect waves-light btn" type="submit">Delete Event</button>
         </form>
+      </div>
       </li>
+       
 
       <li>
+        <div class='comment-section'>
         <form action="/dashboard/comment/add/{{ event.seatgeek_id }}" method="POST">
             <input type="text" name="comment" placeholder="Add Comment" />
             <input class="waves-effect waves-light btn" value='submit' type="submit"></input>
-          </form>
+        </form>
+      </div>
       </li>
 
       {%for comment in event.comments%}
         <div class='comment-section'>
           
-           <div>{{comment.comment}}</div>
-           <div>{{comment.id}}</div>
+          <div>{{comment.comment}}</div>
           
-            <form action="/dashboard/comment/delete/{{ comment.id }}" method="POST">
-              <input type="hidden" name="DELETE" value="Delete Comment" />
-              <button class="waves-effect waves-light btn" type="submit">Delete Comment</button>
-            </form>
+          <form action="/dashboard/comment/delete/{{ comment.id }}" method="POST">
+            <input type="hidden" name="DELETE" value="Delete Comment" />
+            <button class="waves-effect waves-light btn" type="submit">Delete Comment</button>
+          </form>
           
-          </div>
+        </div>
       {% endfor %}
     </ul>
     

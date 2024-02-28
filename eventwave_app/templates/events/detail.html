@@ -7,7 +7,7 @@
     <ul class="collection with-header" id="collection">
     <li class="collection-header" id="collection-item">Event: {{ context.title }}</li>
     
-    <li class="collection-header" id="collection-item">Date: {{ context.pub }}</li>
+    <li class="collection-header" id="collection-item">Date: {{ context.date_start }}</li>
     <li class="collection-header" id="collection-item">Performer:
         {%for performer in context.performerArray%}
          {{performer}}

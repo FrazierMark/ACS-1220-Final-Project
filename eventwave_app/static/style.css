@@ -32,14 +32,23 @@ h1 {
 	line-height: 1.1;
 }
 
-button {
+.my-events {
+	align-items: center;
+	text-align: center;
+}
+
+.title {
+	padding: 2em;
+}
+
+button, #btn {
 	border-radius: 8px;
 	border: 1px solid transparent;
 	padding: 0.6em 1.2em;
 	font-size: 1em;
 	font-weight: 500;
 	font-family: inherit;
-	background-color: #1a1a1a;
+	background-color: #0effdf;
 	cursor: pointer;
 	transition: border-color 0.25s;
 }
@@ -53,6 +62,7 @@ button:focus-visible {
 .comment-section {
 	display: flex;
 	justify-content: space-between;
+	padding: 1em;
 }
 
 @media (prefers-color-scheme: light) {
