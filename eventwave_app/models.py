@@ -1,5 +1,4 @@
 from sqlalchemy_utils import URLType
-
 from eventwave_app.extensions import db
 from eventwave_app.utils import FormEnum
 from flask_login import UserMixin
