@@ -12,3 +12,4 @@ SQLAlchemy==2.0.27
 SQLAlchemy-Utils==0.41.1
 Werkzeug==3.0.1
 WTForms==2.3.3
+gunicorn==20.1.0
