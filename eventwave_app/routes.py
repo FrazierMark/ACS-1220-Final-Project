@@ -1,3 +1,4 @@
+from sqlalchemy.orm import joinedload
 from flask import Blueprint, request, render_template, redirect, url_for, flash
 import string
 from datetime import date, datetime
@@ -129,11 +130,55 @@ def dashboard_delete(seatgeek_id):
 def dashboard_index():
     """Function gets all events associated with a User"""
     
-    # Query to find all events saved by a specific user
-    user_events = Event.query.filter_by(created_by_id=current_user.id).all()
+    # Query to find all events and their comments saved by a specific user
+    user_events = Event.query\
+    .options(joinedload(Event.comments))\
+    .filter_by(created_by=current_user)\
+    .all()
     
-
     return render_template('dashboard/index.html', context=user_events)
+
+@main.route('/dashboard/comment/add/<seatgeek_id>', methods=['GET', 'POST'])
+@login_required
+def dashboard_add_comment(seatgeek_id):
+    """Function adds a comment to an event in user's dashboard"""
+    event = Event.query.filter_by(seatgeek_id=seatgeek_id, created_by_id=current_user.id).first()
+
+    if not event:
+        print("EVENT NOT FOUND")
+        flash('Event not found.')
+        return redirect('/dashboard')
+
+    if request.method == 'POST':
+        comment_text = request.form.get('comment')
+        print(comment_text)
+        if comment_text:
+            comment = Comment(comment=comment_text, event=event, created_by_id=current_user.id)
+            db.session.add(comment)
+            db.session.commit()
+            print('Comment added Successflly')
+            flash('Comment added successfully.')
+        else:
+            flash('Comment cannot be empty.')
+        return redirect('/dashboard')
+
+    return render_template('dashboard/index.html', event=event)
+
+@main.route('/dashboard/comment/delete/<comment_id>', methods=['GET', 'POST'])
+@login_required
+def dashboard_delete_comment(comment_id):
+    print(comment_id)
+    """Function deletes event from user's dashboard"""
+    comment = Comment.query.filter_by(id=comment_id, created_by_id=current_user.id).first()
+    
+    if comment:
+        db.session.delete(comment)
+        db.session.commit()
+        print("Comment was deleted succesfully")
+        flash('Comment was removed from your dashboard.')
+    else:
+        flash('Comment not found.')
+    return redirect('/dashboard')
 
 @auth.route('/signup', methods=['GET', 'POST'])
 def signup():
