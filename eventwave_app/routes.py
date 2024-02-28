@@ -27,7 +27,7 @@ bcrypt = Bcrypt()
 ##########################################
 
 
-@main.route('/')
+@main.route('/', methods=['GET'])
 def homepage():
     """Landing Page"""
     return render_template('events/index.html')
