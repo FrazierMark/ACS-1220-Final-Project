@@ -162,7 +162,6 @@ def dashboard_add_comment(seatgeek_id):
 @main.route('/dashboard/comment/delete/<comment_id>', methods=['GET', 'POST'])
 @login_required
 def dashboard_delete_comment(comment_id):
-    print(comment_id)
     """Function deletes event from user's dashboard"""
     comment = Comment.query.filter_by(id=comment_id, created_by_id=current_user.id).first()
     
