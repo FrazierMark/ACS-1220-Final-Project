@@ -26,7 +26,6 @@ bcrypt = Bcrypt()
 #           Routes                       #
 ##########################################
 
-
 @main.route('/', methods=['GET'])
 def homepage():
     """Landing Page"""
@@ -36,9 +35,7 @@ def homepage():
 def results():
     zip_code = request.form.get('zip')
     radius = request.form.get('radius')
-    
     query = f'{BASE_URL}geoip={str(zip_code)}&range={radius}mi{PER_PAGE}{CLIENT_ID}'
-    
     response = requests.get(query)
     responseData = response.json()
     
@@ -239,7 +236,10 @@ def parse_event_data(event):
         'address': address,
         'venue': venue 
     }
+
+
     
 def format_date(date_string):
     date = datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%S')
     return date.strftime('%A, %B %d, %Y %I:%M %p')
+

@@ -5,39 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>EventWave</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
-    />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" integrity="sha512-16esztaSRplJROstbIIdwX3N97V1+pZvV33ABoG1H2OyTttBxEGkTsoIVsiP1iaTtM8b3+hu2kB6pQ4Clr5yug==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" integrity="sha512-Ic9xkERjyZ1xgJ5svx3y0u3xrvfT/uPkV99LBwe68xjy/mGtO+4eURHZBW2xW4SZbFrF1Tf090XqB+EVgXnVjw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
     <link rel="stylesheet" href="/static/style.css">
   </head>
   
-</div>
   <body>
-    <header class="navbar-fixed">
-      <nav>
-        <div class="nav-wrapper">
-          <a href="/" class="title">EventWave</a>
-            <ul class="right">
-                <li><a href="/" >Home</a></li>
-                <li><a href="/about">About</a></li>
-                {% if current_user.is_authenticated %}
-                    <li><a href="/logout">Log Out</a></li>
-                    <li><a href="/dashboard">Event Dashboard</a></li>
-                {% else %}
-                    <li><a href="/signup">Sign Up</a></li>
-                    <li><a href="/login">Log In</a></li>
-                {% endif %}
-            </ul>
-        </div>
+    <header>
+      <nav class="nav-wrapper">
+          <a href="/" class="logo">EventWave</a>
+            
+          <a href="/" class="home">Home</a>
+          <a href="/about" class="about">About</a>
+          {% if current_user.is_authenticated %}
+              <a href="/dashboard">Event Dashboard</a>
+              <a href="/logout">Log Out</a>
+          {% else %}
+              <a href="/signup">Sign Up</a>
+              <a href="/login">Log In</a>
+          {% endif %}
       </nav>
+      <div class="progress">
+        <div class="inner"></div>
+      </div>
+      
     </header>
    
     <main class="container">{% block content %} {% endblock %}</main>
-  </body>
+
+    <script>
+      gsap.to('.inner', {
+        scaleX: 1,
+        scrollTrigger: {
+          scrub: 0.33333,
+        },
+      });
+    
+      const lenis = new Lenis();
+    
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+    
+      requestAnimationFrame(raf);
+    </script>
   </body>
 </html>

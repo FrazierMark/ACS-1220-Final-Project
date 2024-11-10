@@ -2,34 +2,173 @@
 	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 	line-height: 1.5;
 	font-weight: 400;
-
-	color-scheme: light dark;
-	color: rgba(255, 255, 255, 0.87);
-	background-color: #242424;
-
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
 
-a {
-	font-weight: 500;
-	color: #646cff;
+@font-face {
+	font-family: 'Geist-Light';
+	src: url('../static/fonts/GeistMono-Light.otf') format('opentype');
+	font-weight: 300; /* or the correct weight for Geist-Light */
 }
-a:hover {
-	color: #535bf2;
+
+@font-face {
+	font-family: 'Geist-Bold';
+	src: url('../static/fonts/GeistMono-Bold.otf') format('opentype');
+	font-weight: 700;
+}
+
+a {
+	color: black;
+	text-decoration: none;
 }
 
 body {
 	margin: 0;
 	display: flex;
 	flex-direction: column;
+	background: #fff url('../static/img/bg.svg');
+	font-family: 'Geist-Light', sans-serif;
+	height: 100vh;
 }
 
-h1 {
+header {
+	position: sticky;
+	top: 0;
+	width: 100%;
+	font-weight: bold;
+	height: 80px;
+	z-index: 1000;
+	backdrop-filter: blur(3px);
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	background-color: rgba(195, 207, 203, 0.108);
+}
+
+.nav-wrapper {
+	position: sticky;
+	width: 100%;
+	padding-top: 2rem;
+	padding-left: 1rem;
+	padding-bottom: 1.1rem;
+	padding-right: 20px;
+	display: flex;
+	justify-content: space-between;
+	box-sizing: border-box;
+}
+
+.nav-wrapper a {
+	gap: 0.2rem;
+	color: rgb(79, 77, 77);
+	justify-content: space-between;
+}
+
+a.logo {
+	font-size: 1.3rem;
+	color: black;
+}
+
+.progress {
+	height: 3px;
+	background: #abeeff;
+	width: 100%;
+	z-index: 99999;
+
+	.inner {
+		background: #ff63d0;
+		height: 100%;
+		transform-origin: left;
+		width: 100%;
+		transform: scaleX(0);
+	}
+}
+
+.container {
+	width: 100%;
+	padding-top: 100px;
+}
+
+.search-container {
+	padding: 2rem;
+	margin: 5rem;
+	border: 2px solid #ccc;
+	border-radius: 4px;
+	backdrop-filter: blur(1px);
+	background-color: rgba(195, 207, 203, 0.099);
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+form {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+	align-items: center;
+}
+
+form > * {
+	flex: 1 1 auto;
+}
+
+label {
+	text-align: right;
+}
+
+input {
+	padding: 0.5rem;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+button {
+	padding: 0.5rem 1rem;
+	background-color: #01fff2;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+button:hover {
+	background-color: #0056b3;
+}
+
+.results-container {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	gap: 3rem;
+	padding: 20px;
+}
+
+.result {
+	background-color: #fff;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	overflow: hidden;
+	transition: transform 0.2s;
+}
+
+.result:hover {
+	transform: scale(1.05);
+}
+
+.collection-header {
+	background-color: #f5f5f5;
+	padding: 10px;
+	text-align: center;
+}
+
+.responsive-img {
+	width: 100%;
+	height: auto;
+}
+
+.intro {
+	margin-top: 10rem;
 	font-size: 3.2em;
 	line-height: 1.1;
+	text-align: center;
 }
 
 .my-events {
@@ -39,41 +178,4 @@ h1 {
 
 .title {
 	padding: 2em;
-}
-
-button, #btn {
-	border-radius: 8px;
-	border: 1px solid transparent;
-	padding: 0.6em 1.2em;
-	font-size: 1em;
-	font-weight: 500;
-	font-family: inherit;
-	background-color: #0effdf;
-	cursor: pointer;
-	transition: border-color 0.25s;
-}
-button:hover {
-	border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-	outline: 4px auto -webkit-focus-ring-color;
-}
-.comment-section {
-	display: flex;
-	justify-content: space-between;
-	padding: 1em;
-}
-
-@media (prefers-color-scheme: light) {
-	:root {
-		color: #213547;
-		background-color: #ffffff;
-	}
-	a:hover {
-		color: #747bff;
-	}
-	button {
-		background-color: #f9f9f9;
-	}
 }

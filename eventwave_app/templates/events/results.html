@@ -1,34 +1,26 @@
 {% extends 'base.html' %} {% block content %}
 <h1>Search Results</h1>
 
-<div>
+<div class="results-container">
 	{% for context in eventsContext %}
 	<div class="result" id="result">
-		<ul class="collection with-header" id="collection">
-			<li class="collection-header" id="collection-item">
-				<h4>Event: {{ context.title }}</h4>
-				<br /><a href="events/detail/{{ context.seatgeek_id }}"
-					>Event Details</a
-				>
-			</li>
-			<li id="results-img">
-				<img
-					class="responsive-img"
-					src="{{ context.image }}"
-					alt="Event Image"
-				/>
-			</li>
-			<li class="collection-item" id="collection-item">
-				Date: {{ context.date_start }}
-			</li>
-			<li class="collection-item" id="collection-item">
-				Performer: {% for performer in context.performerArray %} {{ performer }}
-				{% endfor %}
-			</li>
-			<li class="collection-item" id="collection-item">
-				Type: {{ context.kind }}
-			</li>
-		</ul>
+		<div class="collection-header" id="collection-item">
+			<h4>Event: {{ context.title }}</h4>
+			<br /><a href="events/detail/{{ context.seatgeek_id }}">Event Details</a>
+		</div>
+		<div id="results-img">
+			<img class="responsive-img" src="{{ context.image }}" alt="Event Image" />
+		</div>
+		<div class="collection-item" id="collection-item">
+			Date: {{ context.date_start }}
+		</div>
+		<div class="collection-item" id="collection-item">
+			Performer: {% for performer in context.performerArray %} {{ performer }}
+			{% endfor %}
+		</div>
+		<div class="collection-item" id="collection-item">
+			Type: {{ context.kind }}
+		</div>
 	</div>
 	{% endfor %}
 </div>

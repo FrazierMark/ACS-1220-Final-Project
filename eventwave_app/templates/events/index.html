@@ -1,33 +1,18 @@
 {% extends 'base.html' %} {% block content %}
 
-<h1>Your Memories begin here...</h1>
-<section class="container" id="container">
-	<div class="row">
-		<div class="col s12 15">
-			<div class="col s12 15offset-l2">
-				<form action="/results" method="POST">
-					<div class="search">
-						<div class="col s3">
-							<input type="number" id="zip" name="zip" />
-							<label for="number">zip code</label>
-						</div>
-						<div class="col s3">
-							<input type="number" id="radius" name="radius" />
-							<label for="number">mile radius</label>
-						</div>
-						<div class="col s3">
-							<button id='btn'
-								type="submit"
-							>
-								Search
-							</button>
-						</div>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+<h1 class="intro">Your Memories begin here...</h1>
+<section class="search-container">
+	<form action="/results" method="POST">
+		<label for="number">zip code</label>
+		<input type="number" id="zip" name="zip" required />
+
+		<label for="number">mile radius</label>
+		<input type="number" id="radius" name="radius" required />
+
+		<button id="btn" type="submit">Search</button>
+	</form>
 </section>
-</body>
+
+
 
 {% endblock content %}

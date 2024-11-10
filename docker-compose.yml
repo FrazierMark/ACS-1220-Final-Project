@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=sqlite:////data/database.db
+      - SECRET_KEY=itsasecret
+    volumes:
+      - .:/app
+
+  db:
+    image: nouchka/sqlite3
+    platform: linux/amd64
+    volumes:
+      - ./instance:/data/
