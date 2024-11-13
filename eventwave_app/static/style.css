@@ -11,7 +11,7 @@
 @font-face {
 	font-family: 'Geist-Light';
 	src: url('../static/fonts/GeistMono-Light.otf') format('opentype');
-	font-weight: 300; /* or the correct weight for Geist-Light */
+	font-weight: 300;
 }
 
 @font-face {
@@ -21,29 +21,35 @@
 }
 
 a {
-	color: black;
 	text-decoration: none;
 }
 
-body {
-	margin: 0;
-	display: flex;
-	flex-direction: column;
-	background: #fff url('../static/img/bg.svg');
-	font-family: 'Geist-Light', sans-serif;
-	height: 100vh;
-}
-
 header {
+	a {
+		color: black;
+	}
 	position: sticky;
 	top: 0;
 	width: 100%;
 	font-weight: bold;
 	height: 80px;
 	z-index: 1000;
+	font-size: 1.3rem;
+	color: black;
 	backdrop-filter: blur(3px);
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 	background-color: rgba(195, 207, 203, 0.108);
+}
+
+header.dark {
+	a {
+		color: white;
+	}
+	--light: var(--night);
+	--dark: var(--day);
+	--shadow: #030307;
+	--bounce-light: #1b293f;
+	color: white;
 }
 
 .nav-wrapper {
@@ -58,25 +64,20 @@ header {
 	box-sizing: border-box;
 }
 
-.nav-wrapper a {
+/* .nav-wrapper a {
 	gap: 0.2rem;
 	color: rgb(79, 77, 77);
 	justify-content: space-between;
-}
-
-a.logo {
-	font-size: 1.3rem;
-	color: black;
-}
+} */
 
 .progress {
 	height: 3px;
-	background: #abeeff;
+	background: #11f9a8;
 	width: 100%;
 	z-index: 99999;
 
 	.inner {
-		background: #ff63d0;
+		background: #01fff2;
 		height: 100%;
 		transform-origin: left;
 		width: 100%;
@@ -86,24 +87,31 @@ a.logo {
 
 .container {
 	width: 100%;
-	padding-top: 100px;
+	padding-top: 50px;
 }
 
 .search-container {
-	padding: 2rem;
-	margin: 5rem;
-	border: 2px solid #ccc;
+	padding: 3rem;
+	margin-left: 5rem;
+	margin-right: 5rem;
+	border: 2px solid #11f9a8;
 	border-radius: 4px;
 	backdrop-filter: blur(1px);
 	background-color: rgba(195, 207, 203, 0.099);
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+#btn {
+	color: #36404b;
+}
+
 form {
 	display: flex;
+	flex-direction: column;
 	flex-wrap: wrap;
 	gap: 1rem;
 	align-items: center;
+	align-self: center;
 }
 
 form > * {
@@ -141,12 +149,18 @@ button:hover {
 }
 
 .result {
-	background-color: #fff;
+	background-color: rgba(184, 166, 166, 0.554);
+	color: white;
 	border: 1px solid #ddd;
 	border-radius: 8px;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 	overflow: hidden;
-	transition: transform 0.2s;
+	transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.result.dark {
+	background-color: #fff2f2;
+	color: rgb(57, 57, 57);
 }
 
 .result:hover {
@@ -154,7 +168,6 @@ button:hover {
 }
 
 .collection-header {
-	background-color: #f5f5f5;
 	padding: 10px;
 	text-align: center;
 }
@@ -178,4 +191,322 @@ button:hover {
 
 .title {
 	padding: 2em;
+}
+
+article {
+	margin: 0 auto;
+	max-width: 800px;
+	padding: 40vh 0;
+
+	color: var(--dark);
+	isolation: isolate;
+}
+
+article a {
+	color: var(--dark);
+}
+
+body {
+	--day: #fffdfa;
+	--evening: #fccc83;
+	--dusk: #db7a2a;
+	--night: #0f131c;
+	--dawn: #16132b;
+	--morning: #9fb3bf;
+
+	--light: var(--day);
+	--dark: var(--night);
+	--shadow: #1a1917;
+	--bounce-light: #f5d7a6;
+	--timing-fn: cubic-bezier(0.455, 0.19, 0, 0.985);
+
+	display: flex;
+	flex-direction: column;
+	font-family: 'Geist-Light', sans-serif;
+
+	margin: 0;
+	padding: 0;
+	height: 100vh;
+	width: 100vw;
+	background-color: var(--light);
+
+	animation-duration: 0s;
+	animation-fill-mode: forwards;
+	animation-timing-function: linear;
+}
+
+body.animation-ready {
+	animation-play-state: running;
+	animation-duration: 1s;
+	animation-name: sunrise;
+}
+
+body.animation-ready.dark {
+	animation-duration: 1.7s;
+	animation-name: sunset;
+}
+
+body.dark {
+	--light: var(--night);
+	--dark: var(--day);
+	--shadow: #030307;
+	--bounce-light: #1b293f;
+	color: white;
+}
+
+@keyframes sunrise {
+	0% {
+		background-color: var(--night);
+	}
+
+	10% {
+		background-color: var(--dawn);
+	}
+
+	35% {
+		background-color: var(--morning);
+	}
+
+	100% {
+		background-color: var(--day);
+	}
+}
+
+@keyframes sunset {
+	0% {
+		background-color: var(--day);
+	}
+
+	30% {
+		background-color: var(--evening);
+	}
+
+	60% {
+		background-color: var(--dusk);
+	}
+
+	90% {
+		background-color: var(--dawn);
+	}
+
+	100% {
+		background-color: var(--night);
+	}
+}
+
+#dappled-light {
+	z-index: -1;
+	pointer-events: none;
+	position: fixed;
+	height: 100vh;
+	width: 100vw;
+}
+
+#progressive-blur {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+}
+
+#progressive-blur > div {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	inset: 0;
+	backdrop-filter: blur(var(--blur-amount));
+	mask-image: linear-gradient(
+		252deg,
+		transparent,
+		transparent var(--stop1),
+		black var(--stop2),
+		black
+	);
+}
+
+#progressive-blur > div:nth-child(1) {
+	--blur-amount: 6px;
+	--stop1: 0%;
+	--stop2: 0%;
+}
+
+#progressive-blur > div:nth-child(2) {
+	--blur-amount: 12px;
+	--stop1: 40%;
+	--stop2: 80%;
+}
+
+#progressive-blur > div:nth-child(3) {
+	--blur-amount: 48px;
+	--stop1: 40%;
+	--stop2: 70%;
+}
+
+#progressive-blur > div:nth-child(4) {
+	--blur-amount: 96px;
+	--stop1: 70%;
+	--stop2: 80%;
+}
+
+#glow {
+	position: absolute;
+	background: linear-gradient(
+		309deg,
+		var(--bounce-light),
+		var(--bounce-light) 20%,
+		transparent
+	);
+	transition: background 1s var(--timing-fn);
+	height: 100%;
+	width: 100%;
+	opacity: 0.5;
+}
+
+#glow-bounce {
+	content: '';
+	position: absolute;
+	background: linear-gradient(
+		355deg,
+		var(--bounce-light) 0%,
+		transparent 30%,
+		transparent 100%
+	);
+	transition: background 1s var(--timing-fn);
+	opacity: 0.5;
+	height: 100%;
+	width: 100%;
+	bottom: 0;
+}
+
+.perspective {
+	position: absolute;
+	transition: transform 1.7s var(--timing-fn), opacity 4s ease;
+	top: -30vh;
+	right: 0;
+	width: 80vw;
+	height: 130vh;
+	opacity: 0.07;
+	background-blend-mode: darken;
+	transform-origin: top right;
+	transform-style: preserve-3d;
+	transform: matrix3d(
+		0.75,
+		-0.0625,
+		0,
+		0.0008,
+		0,
+		1,
+		0,
+		0,
+		0,
+		0,
+		1,
+		0,
+		0,
+		0,
+		0,
+		1
+	);
+}
+
+.dark .perspective {
+	opacity: 0.3;
+	transform: matrix3d(
+		0.8333,
+		0.0833,
+		0,
+		0.0003,
+		0,
+		1,
+		0,
+		0,
+		0,
+		0,
+		1,
+		0,
+		0,
+		0,
+		0,
+		1
+	);
+}
+
+#leaves {
+	position: absolute;
+	background-size: cover;
+	background-repeat: no-repeat;
+	bottom: -20px;
+	right: -700px;
+	width: 1600px;
+	height: 1400px;
+	background-image: url('/static/img/leaves.png');
+	filter: url(#wind);
+	animation: billow 8s ease-in-out infinite;
+}
+
+#blinds {
+	position: relative;
+	width: 100%;
+}
+
+#blinds .shutter,
+#blinds .bar {
+	background-color: var(--shadow);
+}
+
+#blinds > .shutters {
+	display: flex;
+	flex-direction: column;
+	align-items: end;
+	gap: 60px;
+	transition: gap 1s var(--timing-fn);
+}
+
+.dark #blinds > .shutters {
+	gap: 20px;
+}
+
+#blinds > .vertical {
+	top: 0;
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	display: flex;
+	justify-content: space-around;
+}
+
+.vertical > .bar {
+	width: 5;
+	height: 100%;
+}
+
+.shutter {
+	width: 100%;
+	height: 40px;
+	transition: height 1s var(--timing-fn);
+}
+
+.dark .shutter {
+	height: 80px;
+}
+
+@keyframes billow {
+	0% {
+		transform: perspective(400px) rotateX(0deg) rotateY(0deg) scale(1);
+	}
+
+	25% {
+		transform: perspective(400px) rotateX(1deg) rotateY(2deg) scale(1.02);
+	}
+
+	50% {
+		transform: perspective(400px) rotateX(-4deg) rotateY(-2deg) scale(0.97);
+	}
+
+	75% {
+		transform: perspective(400px) rotateX(1deg) rotateY(-1deg) scale(1.04);
+	}
+
+	100% {
+		transform: perspective(400px) rotateX(0deg) rotateY(0deg) scale(1);
+	}
 }
