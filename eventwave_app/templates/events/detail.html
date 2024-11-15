@@ -1,30 +1,89 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Details PAGE</h1>
-
-
-<div class="result">
-    <ul class="collection with-header" id="collection">
-    <li class="collection-header" id="collection-item">Event: {{ context.title }}</li>
-    
-    <li class="collection-header" id="collection-item">Date: {{ context.date_start }}</li>
-    <li class="collection-header" id="collection-item">Performer:
-        {%for performer in context.performerArray%}
-         {{performer}}
-        {% endfor %}
-    </li>
-    <li class="collection-header" id="collection-item">Address: {{ context.address }}</li>
-    <li class="collection-header" id="collection-item">Type: {{ context.kind }}</li>
-    <li id="results-img" class="collection-header" id="collection-item"><img class="responsive-img" src={{ context.image }} alt="Event Image"> <br> <button class="waves-effect waves-light btn"><a style="text-decoration: none; color: inherit;" href='{{ context.url }}' target="_blank"> Tickets </button> </li>
-    
-    <li class="collection-header" id="collection-item"><form action="/dashboard/{{ context.seatgeek_id }}" method="POST">
-        <input type="hidden" name="POST" value="Add To Event List" />
-        <button class="waves-effect waves-light btn" type="submit">Add to My Event List</button>
-    </form></li>
-    <li class="collection-header" id="collection-item"><button class="waves-effect waves-light btn"><a style="text-decoration: none; color: inherit;" href='{{ context.googleEventCalendarURL }}' target="_blank"> Add to Google Calendar </button> </li>
-        <li class="collection-header" id="collection-item" style="text-align: center;"></li>
-    </ul>
-    
-</div>
+<div class="details-container">
+    <div class="event-card">
+      <div class="event-header">
+        <img class="event-image" src="{{ context.image }}" alt="Event Image" />
+        
+        <div class="event-title-section">
+          <h1 class="event-title">{{ context.title }}</h1>
+          <span class="event-type">{{ context.kind }}</span>
+        </div>
+      </div>
+  
+      <div class="event-content">
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              Date
+            </div>
+            <div class="info-value">{{ context.date_start }}</div>
+          </div>
+  
+          <div class="info-item">
+            <div class="info-label">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              Performer
+            </div>
+            <div class="info-value">
+              {% for performer in context.performerArray %}
+                {{ performer }}{% if not loop.last %}, {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+  
+          <div class="info-item">
+            <div class="info-label">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              Location
+            </div>
+            <div class="info-value">{{ context.address }}</div>
+          </div>
+        </div>
+  
+        <div class="actions-grid">
+          <a href="{{ context.url }}" target="_blank" class="action-button primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="8" y1="12" x2="16" y2="12"></line>
+            </svg>
+            Get Tickets
+          </a>
+  
+          <form action="/dashboard/{{ context.seatgeek_id }}" method="POST" class="action-form">
+            <input type="hidden" name="POST" value="Add To Event List" />
+            <button type="submit" class="action-button secondary">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+              </svg>
+              Add to My Events
+            </button>
+          </form>
+  
+          <a href="{{ context.googleEventCalendarURL }}" target="_blank" class="action-button secondary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            Add to Calendar
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 
 {% endblock content %}

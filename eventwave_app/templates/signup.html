@@ -2,29 +2,58 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>Sign Up</h1>
-
-<form action="/signup" method="POST">
-  {{ form.csrf_token }}
-  <fieldset>
-      {{ form.username.label }}
-      {{ form.username }}
-      <ul>
-      {% for error in form.username.errors %}
-          <li class="error">{{ error }}</li>
-      {% endfor %}
-      </ul>
-
-      {{ form.password.label }}
-      {{ form.password }}
-      <ul>
-      {% for error in form.password.errors %}
-          <li class="error">{{ error }}</li>
-      {% endfor %}
-      </ul>
-
-      {{ form.submit }}
-  </fieldset>
-</form>
+<section class="auth-container">
+    <div class="auth-card">
+      <h1 class="auth-title">Sign Up</h1>
+      <p class="auth-subtitle">Create your account to get started</p>
+      
+      <form action="/signup" method="POST" class="auth-form">
+        {{ form.csrf_token }}
+        
+        <div class="form-content">
+          <div class="form-group">
+            {{ form.username.label(class_="form-label") }}
+            <div class="input-wrapper">
+              {{ form.username(class_="form-input", placeholder="Choose a username") }}
+              {% for error in form.username.errors %}
+                <span class="error-message">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                  </svg>
+                  {{ error }}
+                </span>
+              {% endfor %}
+            </div>
+          </div>
+  
+          <div class="form-group">
+            {{ form.password.label(class_="form-label") }}
+            <div class="input-wrapper">
+              {{ form.password(class_="form-input", placeholder="Create a secure password") }}
+              {% for error in form.password.errors %}
+                <span class="error-message">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                  </svg>
+                  {{ error }}
+                </span>
+              {% endfor %}
+            </div>
+          </div>
+  
+          {{ form.submit(class_="submit-btn", value="Create Account") }}
+        </div>
+      </form>
+  
+      <p class="auth-footer">
+        Already have an account? 
+        <a href="/login" class="auth-link">Log in</a>
+      </p>
+    </div>
+  </section>
 
 {% endblock %}
