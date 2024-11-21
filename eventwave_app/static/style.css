@@ -456,7 +456,7 @@ input[type='number'] {
 	font-weight: 500;
 	transition: all 0.3s ease;
 	margin-left: 1rem;
-	margin-bottom: 0rem;
+	margin-bottom: 0.5rem;
 }
 
 .result-button:hover {
